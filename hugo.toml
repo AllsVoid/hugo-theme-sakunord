@@ -1,3 +1,58 @@
-baseURL = 'https://example.org/'
-languageCode = 'en-US'
-title = 'My New Hugo Site'
+baseURL = "http://example.org/"
+languageCode = "zh-cn"
+title = "My New Hugo Site"
+
+# 文章显示配置
+[params]
+# 每页显示的文章数量
+postsPerPage = 5
+# 文章摘要长度
+summaryLength = 50
+# 是否显示阅读时间
+showReadingTime = true
+# 是否显示文章图片
+showPostImage = true
+
+# 作者信息
+[params.author]
+name = "wky"
+bio = "Your bio description"
+avatar = "images/avatar.jpg"
+
+# 社交媒体链接
+[params.social]
+github = "AllsVoid"
+x = ""
+email = "msywky@gmail.com"
+bilibili = "393881563"
+
+# 分页配置
+[pagination]
+# 每页显示的文章数量
+paginate = 5
+# 分页路径
+paginatePath = "page"
+
+# 文章配置
+[permalinks]
+posts = "/:year/:month/:title/"
+
+# 菜单配置
+[menu]
+[[menu.main]]
+identifier = "home"
+name = "首页"
+url = "/"
+weight = -100
+[[menu.main]]
+identifier = "posts"
+name = "文章"
+url = "/posts/"
+weight = -90
+[[menu.main]]
+identifier = "tags"
+name = "标签"
+url = "/tags/"
+weight = -80
+
+

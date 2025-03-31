@@ -1,7 +1,7 @@
-# Theme Name
+# Hugo-theme-(???)
 
-## Features
+## 介绍
 
-## Installation
+使用 TailwindCSS v4 + PostCSS 进行构建
 
-## Configuration
+目前还在开发中……

@@ -1,7 +1,78 @@
 {{ define "main" }}
-  {{ .Content }}
-  {{ range site.RegularPages }}
-    <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-    {{ .Summary }}
-  {{ end }}
+<div class="container mx-auto px-4 py-8">
+  <div class="grid gap-8">
+    {{ $paginator := .Paginate (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) (.Site.Params.postsPerPage | default 5) }}
+    {{ range $paginator.Pages }}
+    <article class="bg-white rounded-lg shadow-md overflow-hidden">
+      <div class="flex flex-col md:flex-row">
+        <!-- 左侧图片 -->
+        {{ if .Params.image }}
+        <div class="md:w-1/3">
+          <img
+            src="{{ .Params.image }}"
+            alt="{{ .Title }}"
+            class="w-full h-48 md:h-full object-cover"
+          />
+        </div>
+        {{ end }}
+        
+        <!-- 右侧内容 -->
+        <div class="flex-1 p-6">
+          <!-- 标题 -->
+          <h2 class="text-xl font-bold text-gray-800 mb-2">
+            <a href="{{ .RelPermalink }}" class="hover:text-blue-600 transition-colors">
+              {{ .Title }}
+            </a>
+          </h2>
+          
+          <!-- 元信息 -->
+          <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-3">
+            <!-- 发布时间 -->
+            <time datetime="{{ .Date.Format "2006-01-02" }}">
+              {{ .Date.Format "2006-01-02" }}
+            </time>
+            <!-- 最后修改 -->
+
+            
+            <!-- 阅读时间 -->
+            <span> 阅读时长: {{ .ReadingTime }} 分钟</span>
+            
+            <!-- 标签 -->
+            {{/*  {{ with .Params.tags }}
+            <div class="flex gap-2">
+              {{ range . }}
+              <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" 
+                class="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs hover:bg-gray-200 transition-colors">
+                {{ . }}
+              </a>
+              {{ end }}
+            </div>
+            {{ end }}
+          </div>  */}}
+          
+          <!-- 摘要 -->
+          <div class="text-gray-600 text-sm">
+            {{ .Summary | plainify | truncate 200 }}
+          </div>
+          
+          <!-- 阅读更多按钮 -->
+          <div class="mt-4">
+            <a href="{{ .RelPermalink }}" 
+              class="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+              阅读更多
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+    {{ end }}
+    
+    <!-- 分页 -->
+    {{ if gt $paginator.TotalPages 1 }}
+    <div class="flex justify-center mt-8">
+      {{ template "_internal/pagination.html" . }}
+    </div>
+    {{ end }}
+  </div>
+</div>
 {{ end }}

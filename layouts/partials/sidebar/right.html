@@ -1,0 +1,81 @@
+{{ $avatar := resources.Get "images/avatar.jpg" }} {{ $avatarImage := "" }} {{
+if $avatar }} {{ $avatarImage = $avatar.Fill "200x200" }} {{ end }}
+
+<aside class="w-56 flex-shrink-0 hidden lg:block">
+  <div>
+    <!-- 头像和作者信息 -->
+    <div id="avatar" class="bg-white rounded-lg shadow-md p-4 mb-4 text-sm">
+      <div class="flex flex-col items-center">
+        {{ if $avatarImage }}
+        <img
+          src="{{ $avatarImage.RelPermalink }}"
+          alt="{{ .Site.Params.author.name }}"
+          class="w-20 h-20 rounded-full mb-2 object-cover border-2 border-gray-200"
+        />
+        {{ else }}
+        <div
+          class="w-20 h-20 rounded-full mb-2 bg-gray-200 flex items-center justify-center"
+        >
+          <span class="text-2xl text-gray-500"
+            >{{ substr .Site.Params.author.name 0 1 }}</span
+          >
+        </div>
+        {{ end }}
+        <h2 class="text-base font-bold text-gray-800 middle">
+          {{ .Site.Params.author.name }}
+        </h2>
+        <p class="text-gray-600 text-center mt-1 text-xs">
+          {{ .Site.Params.author.bio }}
+        </p>
+      </div>
+    </div>
+
+    <!-- 社交媒体链接 -->
+    <div id="social" class="bg-white rounded-lg shadow-md p-3 mb-4 text-sm">
+      <h3 class="text-sm text-center font-semibold text-gray-800 mb-2">
+        社交媒体
+      </h3>
+      <div class="flex flex-row justify-center space-x-4">
+        {{ range $key, $value := .Site.Params.social }}
+          {{ if $value }}
+            {{ with resources.Get (printf "svg/%s.svg" $key) }}
+              <a
+                href="{{ if eq $key "email" }}mailto:{{ $value }}
+                {{ else if eq $key "bilibili" }}https://space.bilibili.com/{{ $value }}
+                {{ else }}https://{{ $key }}.com/{{ $value }}{{ end }}"
+                class="text-gray-600 hover:text-gray-900 transition-colors"
+                title="{{ $key | title }}"
+                {{ if ne $key "email" }}target="_blank" rel="noopener noreferrer"{{ end }}
+              >
+                <img
+                  src="{{ .RelPermalink }}"
+                  alt="{{ $key | title }}"
+                  class="w-4 h-4"
+                />
+              </a>
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      </div>
+    </div>
+
+    <!-- 标签云 -->
+    <div id="tags" class="bg-white rounded-lg shadow-md p-3 text-sm">
+      <h3 class="text-sm text-center font-semibold text-gray-800 mb-2">标签</h3>
+      <div class="flex flex-wrap gap-1">
+        {{ range .Site.Taxonomies.tags }}
+        <!-- 使用Hugo的debug函数 -->
+        {{/*  <pre>
+{{ printf "Debug: Tag %s -> %s" .Page.Title .Page.RelPermalink | safeHTML }}</pre
+        >  */}}
+        <a
+          href="{{ .Page.RelPermalink }}"
+          class="px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs hover:bg-gray-200 transition-colors"
+        >
+          {{ .Page.Title }}
+        </a>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</aside>

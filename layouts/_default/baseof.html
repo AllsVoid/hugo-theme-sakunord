@@ -1,17 +1,52 @@
 <!DOCTYPE html>
-<html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
-<head>
-  {{ partial "head.html" . }}
-</head>
-<body>
-  <header>
-    {{ partial "header.html" . }}
-  </header>
-  <main>
-    {{ block "main" . }}{{ end }}
-  </main>
-  <footer>
-    {{ partial "footer.html" . }}
-  </footer>
-</body>
+<html
+  lang="{{ or site.Language.LanguageCode site.Language.Lang }}"
+  dir="{{ or site.Language.LanguageDirection `ltr` }}"
+>
+  <head>
+    {{ block "title" . }}
+    <title>
+      {{ if .IsHome }}{{ $.Site.Title }}{{ with $.Site.Params.Subtitle }} — {{ .
+      }}{{ end }}{{ else }}{{ .Title }} :: {{ $.Site.Title }}{{ with
+      $.Site.Params.Subtitle }} — {{ . }}{{ end }}{{ end }}
+    </title>
+    {{ end }} {{ partial "head.html" . }}
+  </head>
+  <body class="w-full bg-slate-50">
+    <header class="flex flex-none justify-center">
+      {{ partial "header.html" . }}
+    </header>
+
+    <div class="container mx-auto px-4 py-8 relative">
+      <div class="flex flex-wrap -mx-4">
+        <!-- 左侧边栏 -->
+        {{/*  <div class="w-full lg:w-1/4 px-4">
+          {{ block "left-sidebar" . }} {{ partial "sidebar/left.html" . }} {{
+          end }}
+        </div>  */}}
+
+        <!-- 主内容区域 -->
+        <div class="w-full lg:w-4/5 px-4">
+          <main class="bg-white rounded-lg shadow-md p-6">
+            {{ block "main" . }}{{ end }}
+          </main>
+        </div>
+
+        <!-- 右侧边栏 -->
+        <div class="w-full lg:w-1/4 px-4">
+          <div
+            class="lg:fixed lg:right-0 lg:top-20 lg:pr-4 lg:z-10 lg:max-w-[14rem]"
+          >
+            {{ block "right-sidebar" . }} {{ partial "sidebar/right.html" . }}
+            {{ end }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="flex flex-none justify-center mt-8">
+      {{ partial "footer.html" . }}
+    </footer>
+  </body>
+  {{ partial "dev/dev-tools.html" .}}
 </html>
